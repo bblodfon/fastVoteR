@@ -10,7 +10,8 @@ rank_candidates(
   weights = NULL,
   committee_size = NULL,
   method = "av",
-  borda_score = TRUE
+  borda_score = TRUE,
+  shuffle_candidates = TRUE
 )
 }
 \arguments{
@@ -21,25 +22,36 @@ A list of subsets, where each subset contains the candidates approved or selecte
 A vector of all candidates to be ranked.}
 
 \item{weights}{(\code{numeric}) \cr
-A numeric vector of weights representing each voter's influence. Larger weight, higher influence.
-Must have the same length as \code{voters}. If \code{NULL} (default), all voters are assigned equal weights of 1, representing equal influence.}
+A numeric vector of weights representing each voter's influence.
+Larger weight, higher influence.
+Must have the same length as \code{voters}.
+If \code{NULL} (default), all voters are assigned equal weights of 1, representing equal influence.}
 
 \item{committee_size}{(\code{integer(1)})\cr
 Number of top candidates to include in the ranking. Default (\code{NULL}) includes all candidates.
-For sequential methods such as \code{"seq_pav"} and \code{"seq_phragmen"}, this parameter can speed up computation
-by limiting the selection process to only the top N candidates, instead of generating a complete ranking.
-In other methods (e.g., \code{"sav"} or \code{"av"}), this parameter simply filters the final output to include
-only the top N candidates from the complete ranking.}
+For sequential methods such as \code{"seq_pav"} and \code{"seq_phragmen"}, this parameter can speed up computation by limiting the selection process to only the top N candidates, instead of generating a complete ranking.
+In other methods (e.g., \code{"sav"} or \code{"av"}), this parameter simply filters the final output to include only the top N candidates from the complete ranking.}
 
 \item{method}{(\code{character(1)}) \cr
-The ranking voting method to use. Must be one of: \code{"av"}, \code{"sav"}, \code{"seq_pav"}, \code{"seq_phragmen"}. See Details.}
+The ranking voting method to use. Must be one of: \code{"av"}, \code{"sav"}, \code{"seq_pav"}, \code{"seq_phragmen"}.
+See Details.}
+
+\item{borda_score}{(\code{logical(1)}) \cr
+Whether to calculate and include Borda scores in the output. See Details.
+Default is \code{TRUE}.}
+
+\item{shuffle_candidates}{(\code{logical(1)}) \cr
+Whether to shuffle the candidates randomly before computing the ranking.
+Shuffling ensures consistent random tie-breaking across methods and prevents
+deterministic biases when candidates with equal scores are encountered.
+Default is \code{TRUE}. Set to \code{FALSE} if deterministic ordering of candidates is preferred.}
 }
 \value{
 A \link[data.table:data.table]{data.table::data.table} with columns:
 \itemize{
 \item \code{"candidate"}: Candidate names.
 \item \code{"score"}: Scores assigned to each candidate based on the selected method.
-\item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities} (see Meinshausen et al., 2010 for an example of this in feature selection in Machine Learning).
+\item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities} (see Meinshausen et al. (2010) for an example in Machine Learning research applicable to feature selection).
 \item \code{"borda_score"}: Borda scores for method-agnostic comparison, ranging from \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
 }
 
@@ -86,7 +98,7 @@ voters = list(
 )
 
 # voter weights
-weights = c(2.5, 1.1, 0.8, 0.9)
+weights = c(1.1, 2.5, 0.8, 0.9)
 
 # Approval voting (all voters equal)
 rank_candidates(voters, candidates)
