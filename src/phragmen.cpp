@@ -15,7 +15,7 @@ int get_index(const CharacterVector &v, const String &s) {
 
 // Sequential Phragmen's Rule
 // [[Rcpp::export]]
-List seq_Phragmen_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size) {
+List seq_phragmen_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size) {
   int n_candidates = std::min<int>(candidates.size(), committee_size);
   CharacterVector committee; // starts empty
   CharacterVector remaining_candidates = clone(candidates); // starts with all candidates

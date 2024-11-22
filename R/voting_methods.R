@@ -25,7 +25,7 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
     res = rbindlist(list(res_sel, res_not_sel))
   } else {
     # returns AV scores so needs ordering
-    res = as.data.table(AV_rcpp(voters, candidates, weights))
+    res = as.data.table(av_rcpp(voters, candidates, weights))
     setorderv(res, cols = "score", order = -1)
   }
 
@@ -43,7 +43,7 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
 
 sav = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   # returns SAV scores so needs ordering
-  res = as.data.table(SAV_rcpp(voters, candidates, weights))
+  res = as.data.table(sav_rcpp(voters, candidates, weights))
   setorderv(res, cols = "score", order = -1)
 
   # filter: top N rows
@@ -63,8 +63,8 @@ seq_pav = function(voters, candidates, weights, committee_size = NULL, borda_sco
     committee_size = length(candidates)
   }
 
-  # returns ranked features from best to worst (up to committee_size)
-  res = as.data.table(seq_PAV_rcpp(voters, candidates, weights, committee_size))
+  # returns ranked candidates from best to worst (up to committee_size)
+  res = as.data.table(seq_pav_rcpp(voters, candidates, weights, committee_size))
 
   if (borda_score) {
     add_borda_score(res, n = length(candidates))
@@ -78,8 +78,8 @@ seq_phragmen = function(voters, candidates, weights, committee_size = NULL, bord
     committee_size = length(candidates)
   }
 
-  # returns ranked features from best to worst (up to committee_size)
-  res = as.data.table(seq_Phragmen_rcpp(voters, candidates, weights, committee_size))
+  # returns ranked candidates from best to worst (up to committee_size)
+  res = as.data.table(seq_phragmen_rcpp(voters, candidates, weights, committee_size))
 
   if (borda_score) {
     add_borda_score(res, n = length(candidates))

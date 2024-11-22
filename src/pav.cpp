@@ -4,7 +4,7 @@ using namespace Rcpp;
 
 // Sequential Proportional Approval Voting
 // [[Rcpp::export]]
-List seq_PAV_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size) {
+List seq_pav_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size) {
   int n_candidates = std::min<int>(candidates.size(), committee_size);
   int n_voters = voters.size();
   CharacterVector committee; // starts empty

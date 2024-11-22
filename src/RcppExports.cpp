@@ -10,22 +10,22 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// AV_rcpp
-List AV_rcpp(List voters, CharacterVector candidates, NumericVector weights);
-RcppExport SEXP _fastVoteR_AV_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP) {
+// av_rcpp
+List av_rcpp(List voters, CharacterVector candidates, NumericVector weights);
+RcppExport SEXP _fastVoteR_av_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type voters(votersSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type candidates(candidatesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(AV_rcpp(voters, candidates, weights));
+    rcpp_result_gen = Rcpp::wrap(av_rcpp(voters, candidates, weights));
     return rcpp_result_gen;
 END_RCPP
 }
-// seq_PAV_rcpp
-List seq_PAV_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size);
-RcppExport SEXP _fastVoteR_seq_PAV_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP, SEXP committee_sizeSEXP) {
+// seq_pav_rcpp
+List seq_pav_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size);
+RcppExport SEXP _fastVoteR_seq_pav_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP, SEXP committee_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,13 +33,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< CharacterVector >::type candidates(candidatesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type committee_size(committee_sizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(seq_PAV_rcpp(voters, candidates, weights, committee_size));
+    rcpp_result_gen = Rcpp::wrap(seq_pav_rcpp(voters, candidates, weights, committee_size));
     return rcpp_result_gen;
 END_RCPP
 }
-// seq_Phragmen_rcpp
-List seq_Phragmen_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size);
-RcppExport SEXP _fastVoteR_seq_Phragmen_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP, SEXP committee_sizeSEXP) {
+// seq_phragmen_rcpp
+List seq_phragmen_rcpp(List voters, CharacterVector candidates, NumericVector weights, int committee_size);
+RcppExport SEXP _fastVoteR_seq_phragmen_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP, SEXP committee_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -47,29 +47,29 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< CharacterVector >::type candidates(candidatesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< int >::type committee_size(committee_sizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(seq_Phragmen_rcpp(voters, candidates, weights, committee_size));
+    rcpp_result_gen = Rcpp::wrap(seq_phragmen_rcpp(voters, candidates, weights, committee_size));
     return rcpp_result_gen;
 END_RCPP
 }
-// SAV_rcpp
-List SAV_rcpp(List voters, CharacterVector candidates, NumericVector weights);
-RcppExport SEXP _fastVoteR_SAV_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP) {
+// sav_rcpp
+List sav_rcpp(List voters, CharacterVector candidates, NumericVector weights);
+RcppExport SEXP _fastVoteR_sav_rcpp(SEXP votersSEXP, SEXP candidatesSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type voters(votersSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type candidates(candidatesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(SAV_rcpp(voters, candidates, weights));
+    rcpp_result_gen = Rcpp::wrap(sav_rcpp(voters, candidates, weights));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_fastVoteR_AV_rcpp", (DL_FUNC) &_fastVoteR_AV_rcpp, 3},
-    {"_fastVoteR_seq_PAV_rcpp", (DL_FUNC) &_fastVoteR_seq_PAV_rcpp, 4},
-    {"_fastVoteR_seq_Phragmen_rcpp", (DL_FUNC) &_fastVoteR_seq_Phragmen_rcpp, 4},
-    {"_fastVoteR_SAV_rcpp", (DL_FUNC) &_fastVoteR_SAV_rcpp, 3},
+    {"_fastVoteR_av_rcpp", (DL_FUNC) &_fastVoteR_av_rcpp, 3},
+    {"_fastVoteR_seq_pav_rcpp", (DL_FUNC) &_fastVoteR_seq_pav_rcpp, 4},
+    {"_fastVoteR_seq_phragmen_rcpp", (DL_FUNC) &_fastVoteR_seq_phragmen_rcpp, 4},
+    {"_fastVoteR_sav_rcpp", (DL_FUNC) &_fastVoteR_sav_rcpp, 3},
     {NULL, NULL, 0}
 };
 

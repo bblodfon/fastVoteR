@@ -3,7 +3,7 @@ using namespace Rcpp;
 
 // Approval Voting
 // [[Rcpp::export]]
-List AV_rcpp(List voters, CharacterVector candidates, NumericVector weights) {
+List av_rcpp(List voters, CharacterVector candidates, NumericVector weights) {
   int n_candidates = candidates.size();
   int n_voters = voters.size();
   NumericVector approval_counts(n_candidates);

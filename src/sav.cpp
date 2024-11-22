@@ -3,7 +3,7 @@ using namespace Rcpp;
 
 // Satisfaction Approval Voting
 // [[Rcpp::export]]
-List SAV_rcpp(List voters, CharacterVector candidates, NumericVector weights) {
+List sav_rcpp(List voters, CharacterVector candidates, NumericVector weights) {
   int n_candidates = candidates.size();
   int n_voters = voters.size();
   NumericVector satisfaction_scores(n_candidates);
