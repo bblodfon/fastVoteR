@@ -1,3 +1,4 @@
 # fastVoteR
 
-R package with Rcpp (C++) voting theory methods for committee ranking 
+R package with Efficient Rcpp Voting Methods for Committee Selection in R.
+
