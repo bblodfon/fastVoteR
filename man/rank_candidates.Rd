@@ -50,8 +50,8 @@ Default is \code{TRUE}. Set to \code{FALSE} if deterministic ordering of candida
 A \link[data.table:data.table]{data.table::data.table} with columns:
 \itemize{
 \item \code{"candidate"}: Candidate names.
-\item \code{"score"}: Scores assigned to each candidate based on the selected method.
-\item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities} (see Meinshausen et al. (2010) for an example in Machine Learning research applicable to feature selection).
+\item \code{"score"}: Scores assigned to each candidate based on the selected method (if applicable).
+\item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities} (see Meinshausen et al. (2010) for an example in Machine Learning research where the goal is to perform stable feature selection).
 \item \code{"borda_score"}: Borda scores for method-agnostic comparison, ranging from \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
 }
 
@@ -66,7 +66,7 @@ This method implements several consensus-based ranking methods, where voters exp
 The input framework considers:
 \itemize{
 \item \strong{Voters}: A list where each element represents the preferences (subsets of candidates) of a single voter.
-\item \strong{Candidates}: A vector of all possible candidates. This vector is shuffled before processing to enforce consistent random tie-breaking across methods.
+\item \strong{Candidates}: A vector of all possible candidates. This vector is shuffled before processing to enforce random tie-breaking across methods.
 \item \strong{Weights}: A numeric vector specifying the \emph{influence} of each voter. Equal weights indicate all voters contribute equally; different weights can reflect varying voter importance.
 }
 

@@ -57,7 +57,7 @@
 #' Candidates are ordered by decreasing `"score"`, or by `"borda_score"` if the method returns only rankings.
 #'
 #' @references
-#' `r format_bib("meinshausen2010", "lackner2023")`
+#' `r mlr3misc::format_bib("meinshausen2010", "lackner2023")`
 #'
 #' @examples
 #' # 5 candidates
