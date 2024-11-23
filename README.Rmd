@@ -1,0 +1,67 @@
+---
+output: github_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# fastVoteR
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/bblodfon/fastVoteR/graph/badge.svg)](https://app.codecov.io/gh/bblodfon/fastVoteR)
+<!-- badges: end -->
+
+`fastVoteR` is an R package (still under development) with Efficient [Rcpp](https://github.com/rcppcore/rcpp) Voting Methods for Committee Selection in R.
+
+Still **under development**.
+
+## Installation
+
+Development version:
+
+``` r
+# install.packages("pak")
+pak::pak("bblodfon/fastVoteR")
+```
+
+## Example
+
+```{r example}
+library(fastVoteR)
+
+# 5 candidates
+candidates = paste0("V", seq_len(5))
+candidates
+
+# 4 voters
+# "V3" candidate voted by all, "V1" by half, "V2", "V4" once, "V5" was not voted at all
+voters = list(
+  c("V3", "V1", "V4"),
+  c("V3", "V1"),
+  c("V3", "V2"),
+  c("V2", "V4")
+)
+voters
+
+# voter weights
+weights = c(1.1, 2.5, 0.8, 0.9)
+
+# Approval voting (all voters equal)
+rank_candidates(voters, candidates)
+
+# Approval voting (voters unequal)
+rank_candidates(voters, candidates, weights)
+
+# Satisfaction Approval voting (voters unequal)
+rank_candidates(voters, candidates, weights, method = "sav")
+
+# Sequential Proportional Approval voting (voters equal)
+rank_candidates(voters, candidates, method = "seq_pav")
+```
