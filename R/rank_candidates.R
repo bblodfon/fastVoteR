@@ -109,7 +109,7 @@ rank_candidates = function(
   assert_flag(shuffle_candidates)
 
   # check that all voted candidates are in the candidates list
-  expect_in(unique(unlist(voters)), candidates)
+  assert_true(all(unique(unlist(voters)) %in% candidates))
 
   if (is.null(weights)) {
     # Assign equal weights to all voters
