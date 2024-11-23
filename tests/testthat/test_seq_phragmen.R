@@ -26,7 +26,7 @@ test_that("sequential Phragmen's rule", {
     c("V2", "V3", "V6"),
     "V5", "V6", "V7"
   )
-  w3 = rep(1, length(vot4)) # equal weights
+  we3 = rep(1, length(vot3)) # equal weights
 
   # output committee should be:
   # - V1
@@ -37,8 +37,8 @@ test_that("sequential Phragmen's rule", {
   #
   # Rankings after resampling the candidates should respect the above ordering
   res = lapply(1:10, function(i) {
-    spr = seq_phragmen(vot4, sample(cand4), w4_equal)
-    spr$candidate
+    sp = seq_phragmen(vot3, sample(cand3), we3)
+    sp$candidate
   })
 
   for (i in 1:10) {
