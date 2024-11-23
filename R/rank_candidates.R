@@ -14,8 +14,12 @@
 #' The following methods are supported for ranking candidates:
 #' - `"av"`: **Approval Voting (AV)** ranks candidates based on the number of voters approving them.
 #' - `"sav"`: **Satisfaction Approval Voting (SAV)** ranks candidates by normalizing approval scores based on the size of each voter's approval set.
+#' Voters who approve more candidates contribute a lesser score to the individual approved candidates.
 #' - `"seq_pav"`: **Sequential Proportional Approval Voting (PAV)** builds a committee by iteratively maximizing a proportionality-based satisfaction score.
+#' The **PAV score** is a metric that calculates the weighted sum of harmonic numbers corresponding to the number of elected candidates supported by each voter, reflecting the overall satisfaction of voters in a committee selection process.
 #' - `"seq_phragmen"`: **Sequential Phragmen's Rule** selects candidates to balance voter representation by distributing "loads" evenly.
+#' The rule iteratively selects the candidate that results in the smallest increase in voter load.
+#' This approach is suitable for scenarios where a balanced representation is desired, as it seeks to evenly distribute the "burden" of representation among all voters.
 #'
 #' All methods have weighted versions which consider voter weights.
 #'
