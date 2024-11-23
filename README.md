@@ -34,7 +34,6 @@ candidates
 #> [1] "V1" "V2" "V3" "V4" "V5"
 
 # 4 voters
-# "V3" candidate voted by all, "V1" by half, "V2", "V4" once, "V5" was not voted at all
 voters = list(
   c("V3", "V1", "V4"),
   c("V3", "V1"),

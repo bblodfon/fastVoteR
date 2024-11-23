@@ -64,7 +64,6 @@
 #' candidates = paste0("V", seq_len(5))
 #'
 #' # 4 voters
-#' # "V3" candidate voted by all, "V1" by half, "V2", "V4" once, "V5" was not voted at all
 #' voters = list(
 #'   c("V3", "V1", "V4"),
 #'   c("V3", "V1"),
