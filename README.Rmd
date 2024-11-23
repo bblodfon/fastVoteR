@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 # fastVoteR
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check/badge.svg)](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check)
 [![Codecov test coverage](https://codecov.io/gh/bblodfon/fastVoteR/graph/badge.svg)](https://app.codecov.io/gh/bblodfon/fastVoteR)
 <!-- badges: end -->
 
@@ -48,6 +48,8 @@ voters = list(
   c("V2", "V4")
 )
 voters
+
+set.seed(42)
 
 # voter weights
 weights = c(1.1, 2.5, 0.8, 0.9)

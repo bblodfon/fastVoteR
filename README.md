@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check/badge.svg)](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check)
 [![Codecov test
 coverage](https://codecov.io/gh/bblodfon/fastVoteR/graph/badge.svg)](https://app.codecov.io/gh/bblodfon/fastVoteR)
 <!-- badges: end -->
@@ -53,6 +53,8 @@ voters
 #> [[4]]
 #> [1] "V2" "V4"
 
+set.seed(42)
+
 # voter weights
 weights = c(1.1, 2.5, 0.8, 0.9)
 
@@ -91,8 +93,8 @@ rank_candidates(voters, candidates, method = "seq_pav")
 #>    candidate borda_score
 #>       <char>       <num>
 #> 1:        V3        1.00
-#> 2:        V4        0.75
-#> 3:        V2        0.50
-#> 4:        V1        0.25
+#> 2:        V2        0.75
+#> 3:        V1        0.50
+#> 4:        V4        0.25
 #> 5:        V5        0.00
 ```
