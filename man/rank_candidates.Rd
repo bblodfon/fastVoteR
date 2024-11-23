@@ -52,7 +52,7 @@ A \link[data.table:data.table]{data.table::data.table} with columns:
 \item \code{"candidate"}: Candidate names.
 \item \code{"score"}: Scores assigned to each candidate based on the selected method (if applicable).
 \item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities} (see Meinshausen et al. (2010) for an example in Machine Learning research where the goal is to perform stable feature selection).
-\item \code{"borda_score"}: Borda scores for method-agnostic comparison, ranging from \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
+\item \code{"borda_score"}: Borda scores for method-agnostic comparison, ranging in \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
 }
 
 Candidates are ordered by decreasing \code{"score"}, or by \code{"borda_score"} if the method returns only rankings.
@@ -125,4 +125,5 @@ Lackner, Martin, Skowron, Piotr (2023).
 \emph{Multi-Winner Voting with Approval Preferences}.
 Springer Nature.
 ISBN 9783031090165, \doi{10.1007/978-3-031-09016-5}, 2007.01795.
+``
 }

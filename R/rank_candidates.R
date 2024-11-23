@@ -52,13 +52,13 @@
 #' - `"candidate"`: Candidate names.
 #' - `"score"`: Scores assigned to each candidate based on the selected method (if applicable).
 #' - `"norm_score"`: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as **selection probabilities** (see Meinshausen et al. (2010) for an example in Machine Learning research where the goal is to perform stable feature selection).
-#' - `"borda_score"`: Borda scores for method-agnostic comparison, ranging from \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
+#' - `"borda_score"`: Borda scores for method-agnostic comparison, ranging in \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
 #'
 #' Candidates are ordered by decreasing `"score"`, or by `"borda_score"` if the method returns only rankings.
 #'
 #' @references
 #' `r mlr3misc::format_bib("meinshausen2010", "lackner2023")`
-#'
+#'``
 #' @examples
 #' # 5 candidates
 #' candidates = paste0("V", seq_len(5))
