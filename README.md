@@ -8,6 +8,8 @@
 coverage](https://codecov.io/gh/bblodfon/fastVoteR/graph/badge.svg)](https://app.codecov.io/gh/bblodfon/fastVoteR)
 <!-- badges: end -->
 
+## Overview
+
 `fastVoteR` is an R package with Efficient
 [Rcpp](https://github.com/rcppcore/rcpp) Voting Methods for Committee
 Selection.
@@ -23,7 +25,7 @@ Development version:
 pak::pak("bblodfon/fastVoteR")
 ```
 
-## Example
+## Usage
 
 ``` r
 library(fastVoteR)
@@ -98,3 +100,19 @@ rank_candidates(voters, candidates, method = "seq_pav")
 #> 4:        V4        0.25
 #> 5:        V5        0.00
 ```
+
+## Related work
+
+See [vote](https://cran.r-project.org/web/packages/vote/index.html) and
+[votesys](https://cran.r-project.org/web/packages/votesys/index.html) R
+packages. For strictly ABC-voting rules, see
+[abcvoting](https://github.com/martinlackner/abcvoting) Python package.
+
+------------------------------------------------------------------------
+
+## Code of Conduct
+
+Please note that the `fastVoteR` project is released with a [Contributor
+Code of
+Conduct](https://bblodfon.github.io/fastVoteR/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.
