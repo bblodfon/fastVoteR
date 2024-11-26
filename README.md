@@ -8,7 +8,7 @@
 coverage](https://codecov.io/gh/bblodfon/fastVoteR/graph/badge.svg)](https://app.codecov.io/gh/bblodfon/fastVoteR)
 <!-- badges: end -->
 
-`fastVoteR` is an R package (still under development) with Efficient
+`fastVoteR` is an R package with Efficient
 [Rcpp](https://github.com/rcppcore/rcpp) Voting Methods for Committee
 Selection.
 
