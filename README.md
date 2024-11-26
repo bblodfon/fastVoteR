@@ -103,9 +103,9 @@ rank_candidates(voters, candidates, method = "seq_pav")
 
 ## Related work
 
-See [vote](https://cran.r-project.org/web/packages/vote/index.html) and
-[votesys](https://cran.r-project.org/web/packages/votesys/index.html) R
-packages. For strictly ABC-voting rules, see
+See [vote](https://CRAN.R-project.org/package=vote) and
+[votesys](https://CRAN.R-project.org/package=votesys) R packages. For
+strictly ABC-voting rules, see
 [abcvoting](https://github.com/martinlackner/abcvoting) Python package.
 
 ------------------------------------------------------------------------
