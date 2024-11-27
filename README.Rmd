@@ -27,9 +27,11 @@ Still **under development**.
 
 ## Installation
 
-Development version:
-
 ``` r
+# CRAN version:
+install.packages("fastVoteR")
+
+# Development version from GitHub:
 # install.packages("pak")
 pak::pak("bblodfon/fastVoteR")
 ```
