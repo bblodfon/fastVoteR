@@ -6,6 +6,8 @@
 [![R-CMD-check](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bblodfon/fastVoteR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/bblodfon/fastVoteR/graph/badge.svg)](https://app.codecov.io/gh/bblodfon/fastVoteR)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/fastVoteR)](https://CRAN.R-project.org/package=fastVoteR)
 <!-- badges: end -->
 
 ## Overview
