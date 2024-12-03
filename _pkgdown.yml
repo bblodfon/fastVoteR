@@ -11,3 +11,11 @@ template:
   light-switch: true
   math-rendering: mathjax
 
+navbar:
+  structure:
+    right: [search, github, lightswitch]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/bblodfon/fastVoteR
+      aria-label: GitHub
