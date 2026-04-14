@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 `fastVoteR` is an R package with efficient voting methods for committee selection.
-Uses [Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html).
+Uses [Rcpp](https://cran.r-project.org/package=Rcpp).
 
 ## Installation
 

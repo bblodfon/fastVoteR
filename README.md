@@ -13,8 +13,7 @@ status](https://www.r-pkg.org/badges/version/fastVoteR)](https://CRAN.R-project.
 <!-- badges: end -->
 
 `fastVoteR` is an R package with efficient voting methods for committee
-selection. Uses
-[Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html).
+selection. Uses [Rcpp](https://cran.r-project.org/package=Rcpp).
 
 ## Installation
 
