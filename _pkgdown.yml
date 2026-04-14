@@ -12,3 +12,11 @@ navbar:
       icon: fa-github
       href: https://github.com/bblodfon/fastVoteR
       aria-label: GitHub
+
+reference:
+  - title: Package
+    contents:
+      - fastVoteR-package
+  - title: Ranking Functions
+    contents:
+      - rank_candidates
