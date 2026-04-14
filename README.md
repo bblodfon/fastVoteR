@@ -1,7 +1,7 @@
 
 # fastVoteR
 
-Package website: [release](https://bblodfon.github.io/fastVoteR/)
+[Package website](https://bblodfon.github.io/fastVoteR/)
 
 <!-- badges: start -->
 
@@ -13,16 +13,20 @@ status](https://www.r-pkg.org/badges/version/fastVoteR)](https://CRAN.R-project.
 <!-- badges: end -->
 
 `fastVoteR` is an R package with efficient voting methods for committee
-selection. Uses [Rcpp](https://github.com/rcppcore/rcpp).
+selection. Uses
+[Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html).
 
 ## Installation
 
-# CRAN version:
+CRAN version:
 
 ``` r
 install.packages("fastVoteR")
+```
 
-# Development version from GitHub:
+Development version from GitHub:
+
+``` r
 # install.packages("pak")
 pak::pak("bblodfon/fastVoteR")
 ```
@@ -37,7 +41,7 @@ candidates = paste0("V", seq_len(5))
 candidates
 #> [1] "V1" "V2" "V3" "V4" "V5"
 
-# 4 voters
+# 4 voters with their preferences (approval ballots)
 voters = list(
   c("V3", "V1", "V4"),
   c("V3", "V1"),
