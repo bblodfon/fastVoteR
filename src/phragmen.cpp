@@ -2,7 +2,7 @@
 #include <random>
 using namespace Rcpp;
 
-// helper function to get the index of element `s` from vector `v, O(n) complexity
+// helper function to get the index of element `s` from vector `v`, O(n) complexity
 int get_index(const CharacterVector &v, const String &s) {
   int index = -1; // not found
   auto it = std::find(v.begin(), v.end(), s);
