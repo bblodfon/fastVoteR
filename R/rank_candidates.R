@@ -3,6 +3,8 @@
 #' @description
 #' Calculates a ranking of candidates based on voters' preferences.
 #' Approval-Based Committe (ABC) rules are based on Lackner et al. (2023).
+#' For an example use in Machine Learning for ensemble feature selection,
+#' see Zobolas et al. (2026).
 #'
 #' @details
 #' This method implements several consensus-based ranking methods, where voters express preferences for candidates.
@@ -61,8 +63,13 @@
 #' Candidates are ordered by decreasing `"score"`, or by `"borda_score"` if the method returns only rankings.
 #'
 #' @references
-#' `r mlr3misc::format_bib("meinshausen2010", "lackner2023")`
-#'``
+#'
+#' Lackner M, Skowron P (2023). *Multi-Winner Voting with Approval Preferences*. Springer Nature, 121 p. \doi{10.1007/978-3-031-09016-5}.
+#'
+#' Zobolas J, George A, Lopez A, Fischer S, Becker M, Aittokallio T (2026). "Prognostic biomarker discovery in pancreatic cancer through hybrid ensemble feature selection and multi-omics data." *BioData Mining*. \doi{10.1186/s13040-026-00546-0}.
+#'
+#' Meinshausen N, Buhlmann P (2010). "Stability Selection." *Journal of the Royal Statistical Society Series B: Statistical Methodology*, 72(4), 417-473. \doi{10.1111/J.1467-9868.2010.00740.X}.
+#'
 #' @examples
 #' # 5 candidates
 #' candidates = paste0("V", seq_len(5))
