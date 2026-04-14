@@ -1,10 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://bblodfon.github.io/fastVoteR/404.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://bblodfon.github.io/fastVoteR/CONTRIBUTING.html</loc></url>
+<url><loc>https://bblodfon.github.io/fastVoteR/LICENSE-text.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/LICENSE.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/authors.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/index.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/news/index.html</loc></url>
+<url><loc>https://bblodfon.github.io/fastVoteR/reference/fastVoteR-package.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/reference/index.html</loc></url>
 <url><loc>https://bblodfon.github.io/fastVoteR/reference/rank_candidates.html</loc></url>
 </urlset>
