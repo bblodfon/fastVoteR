@@ -35,12 +35,8 @@ jobs:
           covr::to_cobertura(cov)
         shell: Rscript {0}
 
-<<<<<<< HEAD
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v6
-=======
-      - uses: codecov/codecov-action@v6
->>>>>>> cd2c3a6640af85936fd5fbf20febfbe1ed507867
         with:
           files: cobertura.xml
           fail_ci_if_error: true
