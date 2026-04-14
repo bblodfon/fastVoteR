@@ -60,6 +60,8 @@ Candidates are ordered by decreasing \code{"score"}, or by \code{"borda_score"} 
 \description{
 Calculates a ranking of candidates based on voters' preferences.
 Approval-Based Committe (ABC) rules are based on Lackner et al. (2023).
+For an example use in Machine Learning for ensemble feature selection,
+see Zobolas et al. (2026).
 }
 \details{
 This method implements several consensus-based ranking methods, where voters express preferences for candidates.
@@ -120,14 +122,9 @@ rank_candidates(voters, candidates, method = "seq_phragmen", borda_score = FALSE
 
 }
 \references{
-Meinshausen, Nicolai, Buhlmann, Peter (2010).
-\dQuote{Stability Selection.}
-\emph{Journal of the Royal Statistical Society Series B: Statistical Methodology}, \bold{72}(4), 417--473.
-ISSN 1369-7412, \doi{10.1111/J.1467-9868.2010.00740.X}, 0809.2932.
+Lackner M, Skowron P (2023). \emph{Multi-Winner Voting with Approval Preferences}. Springer Nature, 121 p. \doi{10.1007/978-3-031-09016-5}.
 
-Lackner, Martin, Skowron, Piotr (2023).
-\emph{Multi-Winner Voting with Approval Preferences}.
-Springer Nature.
-ISBN 9783031090165, \doi{10.1007/978-3-031-09016-5}, 2007.01795.
-``
+Zobolas J, George A, Lopez A, Fischer S, Becker M, Aittokallio T (2026). "Prognostic biomarker discovery in pancreatic cancer through hybrid ensemble feature selection and multi-omics data." \emph{BioData Mining}. \doi{10.1186/s13040-026-00546-0}.
+
+Meinshausen N, Buhlmann P (2010). "Stability Selection." \emph{Journal of the Royal Statistical Society Series B: Statistical Methodology}, 72(4), 417-473. \doi{10.1111/J.1467-9868.2010.00740.X}.
 }
