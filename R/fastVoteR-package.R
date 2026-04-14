@@ -1,5 +1,6 @@
 #' @import data.table
 #' @import checkmate
+"_PACKAGE"
 
 ## usethis namespace: start
 #' @importFrom Rcpp sourceCpp
