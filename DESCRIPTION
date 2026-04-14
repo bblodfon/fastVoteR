@@ -1,6 +1,6 @@
 Package: fastVoteR
 Title: Efficient Voting Methods for Committee Selection
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
     person("John", "Zobolas", , "bblodfon@gmail.com", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-3609-8674")),
