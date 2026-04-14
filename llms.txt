@@ -3,8 +3,7 @@
 [Package website](https://bblodfon.github.io/fastVoteR/)
 
 `fastVoteR` is an R package with efficient voting methods for committee
-selection. Uses
-[Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html).
+selection. Uses [Rcpp](https://cran.r-project.org/package=Rcpp).
 
 ## Installation
 
