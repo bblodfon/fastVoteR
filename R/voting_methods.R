@@ -1,6 +1,8 @@
-# these R methods are proxies to the Rcpp implementations
-# We perform some homogenization in terms of outputs
+# these R methods are wrappers for the Rcpp implementations
+# We homogenize a bit the outputs here as well
 
+#' @noRd
+#' @keywords internal
 av = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   # faster R version in case of equal weights
   if (all(weights == 1)) {
@@ -41,6 +43,8 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
   res
 }
 
+#' @noRd
+#' @keywords internal
 sav = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   # returns SAV scores so needs ordering
   res = as.data.table(sav_rcpp(voters, candidates, weights))
@@ -58,6 +62,8 @@ sav = function(voters, candidates, weights, committee_size = NULL, borda_score =
   res
 }
 
+#' @noRd
+#' @keywords internal
 seq_pav = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   if (is.null(committee_size)) {
     committee_size = length(candidates)
@@ -73,6 +79,8 @@ seq_pav = function(voters, candidates, weights, committee_size = NULL, borda_sco
   res
 }
 
+#' @noRd
+#' @keywords internal
 seq_phragmen = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   if (is.null(committee_size)) {
     committee_size = length(candidates)
@@ -88,8 +96,10 @@ seq_phragmen = function(voters, candidates, weights, committee_size = NULL, bord
   res
 }
 
-# add normalized borda scores
-# `n` needs to be the total number of candidates (irrespective of committee size)
+#' @title Adds normalized borda scores
+#' `n` needs to be the total number of candidates (irrespective of committee size)
+#' @noRd
+#' @keywords internal
 add_borda_score = function(dt, n = NULL) {
   if (is.null(n)) n = nrow(dt)
   borda_score = NULL # silence data.table note: "no visible global binding"
