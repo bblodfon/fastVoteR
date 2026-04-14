@@ -13,7 +13,7 @@ Description: A fast 'Rcpp'-based implementation of polynomially-computable
     Voting (SAV), sequential Proportional Approval Voting (PAV), and
     sequential Phragmen's Rule. Weighted variants of these methods are
     also provided, allowing for differential voter influence.
-License: LGPL (>= 3)
+License: MIT + file LICENSE
 URL: https://bblodfon.github.io/fastVoteR/
 Imports: 
     checkmate,
