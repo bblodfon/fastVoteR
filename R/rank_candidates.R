@@ -162,8 +162,8 @@ rank_candidates = function(
     # Assign equal weights to all voters
     weights = rep(1, length(voters))
   } else {
-    # check: one weight per voter
-    weights = assert_numeric(weights, len = length(voters))
+    # check: one weight >= 0 per voter
+    weights = assert_numeric(weights, len = length(voters), lower = 0, any.missing = FALSE)
   }
 
   # Shuffle candidates for consistent tie-breaking
