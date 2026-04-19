@@ -79,7 +79,7 @@
 #'  deterministic biases when candidates with equal scores are encountered.
 #'  Default is `TRUE`.
 #'
-#' @return A [data.table::data.table] with columns:
+#' @return A `data.frame` with columns:
 #' - `"candidate"`: Candidate names.
 #' - `"score"`: Scores assigned to each candidate based on the selected method
 #' (if applicable).
