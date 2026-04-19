@@ -2,6 +2,5 @@
 
 export(rank_candidates)
 import(checkmate)
-import(data.table)
 importFrom(Rcpp,sourceCpp)
 useDynLib(fastVoteR, .registration = TRUE)
