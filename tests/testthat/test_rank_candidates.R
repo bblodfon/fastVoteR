@@ -19,7 +19,7 @@ test_that("rank candidates", {
   expect_data_frame(rank_candidates(vot2, cand2, method = "seq_phragmen"),
                     nrows = length(cand2), ncols = 2, any.missing = FALSE)
 
- # verify each method returns a data frame with expected dimensions (unequal weights)
+  # verify each method returns a data frame with expected dimensions (unequal weights)
   expect_data_frame(rank_candidates(vot2, cand2, w2, method = "av"),
                     nrows = length(cand2), ncols = 4, any.missing = FALSE)
   expect_data_frame(rank_candidates(vot2, cand2, w2, method = "sav"),
