@@ -28,20 +28,15 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
   } else {
     # returns AV scores so needs ordering
     res = data.frame(av_rcpp(voters, candidates, weights))
-    res[order(res$score, decreasing = TRUE), ]
+    res = res[order(res$score, decreasing = TRUE), ]
     rownames(res) = NULL
   }
 
-  # filter: top N rows
-  if (!is.null(committee_size)) {
-    res = res[1:committee_size, ]
-  }
+  # subset to top N rows if committee_size is specified
+  if (!is.null(committee_size)) res = head(res, committee_size)
 
-  if (borda_score) {
-    add_borda_score(res, n = length(candidates))
-  }
-
-  res
+  # add borda scores
+  if (borda_score) add_borda_score(res, n = length(candidates)) else res
 }
 
 #' @noRd
@@ -52,50 +47,35 @@ sav = function(voters, candidates, weights, committee_size = NULL, borda_score =
   res = res[order(res$score, decreasing = TRUE), ]
   rownames(res) = NULL
 
-  # filter: top N rows
-  if (!is.null(committee_size)) {
-    res = res[1:committee_size, ]
-  }
+  # subset to top N rows if committee_size is specified
+  if (!is.null(committee_size)) res = head(res, committee_size)
 
-  if (borda_score) {
-    add_borda_score(res, n = length(candidates))
-  }
-
-  res
+  # add borda scores
+  if (borda_score) add_borda_score(res, n = length(candidates)) else res
 }
 
 #' @noRd
 #' @keywords internal
 seq_pav = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
-  if (is.null(committee_size)) {
-    committee_size = length(candidates)
-  }
+  if (is.null(committee_size)) committee_size = length(candidates)
 
   # returns ranked candidates from best to worst (up to committee_size)
   res = data.frame(seq_pav_rcpp(voters, candidates, weights, committee_size))
 
-  if (borda_score) {
-    add_borda_score(res, n = length(candidates))
-  }
-
-  res
+  # add borda scores
+  if (borda_score) add_borda_score(res, n = length(candidates)) else res
 }
 
 #' @noRd
 #' @keywords internal
 seq_phragmen = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
-  if (is.null(committee_size)) {
-    committee_size = length(candidates)
-  }
+  if (is.null(committee_size)) committee_size = length(candidates)
 
   # returns ranked candidates from best to worst (up to committee_size)
   res = data.frame(seq_phragmen_rcpp(voters, candidates, weights, committee_size))
 
-  if (borda_score) {
-    add_borda_score(res, n = length(candidates))
-  }
-
-  res
+  # add borda scores
+  if (borda_score) add_borda_score(res, n = length(candidates)) else res
 }
 
 #' @title Adds normalized borda scores
