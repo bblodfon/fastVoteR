@@ -8,8 +8,8 @@ test_that("approval voting", {
   # small data example
   res = av(vot2, cand2, w2) # different weights
   expect_equal(res$candidate, c("V3", "V1", "V4", "V2", "V5"))
-  expect_equal(res[candidate == "V3", norm_score], 1) # voted by all
-  expect_equal(res[candidate == "V5", norm_score], 0) # never voted
+  expect_equal(res[res$candidate == "V3", "norm_score"], 1) # voted by all
+  expect_equal(res[res$candidate == "V5", "norm_score"], 0) # never voted
 
   res2 = av(vot2, cand2, we2) # equal weights
   expect_equal(res2$candidate[1:2], c("V3", "V1"))

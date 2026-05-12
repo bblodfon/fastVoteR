@@ -37,7 +37,7 @@ test_large_example = function(method_fun, committee_size = NULL) {
   res = method_fun(vot, cand, w, committee_size)
   size = ifelse(is.null(committee_size), length(cand), committee_size)
 
-  expect_data_table(res, nrows = size, min.cols = 2, max.cols = 4)
+  expect_data_frame(res, nrows = size, min.cols = 2, max.cols = 4)
   expect_contains(colnames(res), c("candidate", "borda_score"))
 
   # committee candidates are included in the candidates
@@ -64,7 +64,7 @@ test_large_example = function(method_fun, committee_size = NULL) {
   # equal weights
   res_equal = method_fun(vot, cand, we, committee_size)
 
-  expect_data_table(res_equal, nrows = size, min.cols = 2, max.cols = 4)
+  expect_data_frame(res_equal, nrows = size, min.cols = 2, max.cols = 4)
   expect_contains(colnames(res_equal), c("candidate", "borda_score"))
 
   # committee candidates are included in the candidates
