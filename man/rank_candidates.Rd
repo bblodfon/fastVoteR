@@ -15,26 +15,33 @@ rank_candidates(
 )
 }
 \arguments{
-\item{voters}{(\code{list}) \cr
-A list of subsets, where each subset contains the candidates approved or selected by a voter.}
+\item{voters}{(\code{list()}) \cr
+A list of subsets (\code{character} vectors), where each subset contains the
+(assumed unique) candidates approved or selected by a voter.}
 
-\item{candidates}{(\code{character}) \cr
+\item{candidates}{(\code{character()}) \cr
 A vector of all candidates to be ranked.}
 
-\item{weights}{(\code{numeric}) \cr
-A numeric vector of weights representing each voter's influence.
+\item{weights}{(\code{numeric()|NULL}) \cr
+A numeric vector of non-negative weights representing each voter's influence.
 Larger weight, higher influence.
 Must have the same length as \code{voters}.
-If \code{NULL} (default), all voters are assigned equal weights of 1, representing equal influence.}
+If \code{NULL} (default), all voters are assigned equal weights of 1, representing
+equal influence.}
 
 \item{committee_size}{(\code{integer(1)})\cr
-Number of top candidates to include in the ranking. Default (\code{NULL}) includes all candidates.
-For sequential methods such as \code{"seq_pav"} and \code{"seq_phragmen"}, this parameter can speed up computation by limiting the selection process to only the top N candidates, instead of generating a complete ranking.
-In other methods (e.g., \code{"sav"} or \code{"av"}), this parameter simply filters the final output to include only the top N candidates from the complete ranking.}
+Number of top candidates to include in the ranking.
+Default (\code{NULL}) includes all candidates.
+For sequential methods such as \code{"seq_pav"} and \code{"seq_phragmen"}, this parameter
+can speed up computation by limiting the selection process to only the top N
+candidates, instead of generating a complete ranking.
+In other methods (e.g., \code{"sav"} or \code{"av"}), this parameter simply filters
+the final output to include only the top N candidates from the complete
+ranking.}
 
 \item{method}{(\code{character(1)}) \cr
-The ranking voting method to use. Must be one of: \code{"av"}, \code{"sav"}, \code{"seq_pav"}, \code{"seq_phragmen"}.
-See Details.}
+The ranking voting method to use. Must be one of: \code{"av"}, \code{"sav"}, \code{"seq_pav"},
+\code{"seq_phragmen"}. See Details.}
 
 \item{borda_score}{(\code{logical(1)}) \cr
 Whether to calculate and include Borda scores in the output. See Details.
@@ -42,20 +49,27 @@ Default is \code{TRUE}.}
 
 \item{shuffle_candidates}{(\code{logical(1)}) \cr
 Whether to shuffle the candidates randomly before computing the ranking.
-Shuffling ensures consistent random tie-breaking across methods and prevents
+Shuffling ensures random tie-breaking across methods and prevents
 deterministic biases when candidates with equal scores are encountered.
-Default is \code{TRUE}. Set to \code{FALSE} if deterministic ordering of candidates is preferred.}
+Default is \code{TRUE}.}
 }
 \value{
-A \link[data.table:data.table]{data.table::data.table} with columns:
+A \code{data.frame} with columns:
 \itemize{
 \item \code{"candidate"}: Candidate names.
-\item \code{"score"}: Scores assigned to each candidate based on the selected method (if applicable).
-\item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range \eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities} (see Meinshausen et al. (2010) for an example in Machine Learning research where the goal is to perform stable feature selection).
-\item \code{"borda_score"}: Borda scores for method-agnostic comparison, ranging in \eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked candidate receives a score of 0.
+\item \code{"score"}: Scores assigned to each candidate based on the selected method
+(if applicable).
+\item \code{"norm_score"}: Normalized scores (if applicable), scaled to the range
+\eqn{[0,1]}, which can be loosely interpreted as \strong{selection probabilities}
+(see Meinshausen et al. (2010) for an example in Machine Learning research
+where the goal is to perform stable feature selection).
+\item \code{"borda_score"}: Borda scores for method-agnostic comparison, ranging in
+\eqn{[0,1]}, where the top candidate receives a score of 1 and the lowest-ranked
+candidate receives a score of 0.
 }
 
-Candidates are ordered by decreasing \code{"score"}, or by \code{"borda_score"} if the method returns only rankings.
+Candidates are ordered by decreasing \code{"score"}, or by \code{"borda_score"} if the
+method returns only rankings.
 }
 \description{
 Calculates a ranking of candidates based on voters' preferences.
@@ -64,31 +78,49 @@ For an example use in Machine Learning for ensemble feature selection,
 see Zobolas et al. (2026).
 }
 \details{
-This method implements several consensus-based ranking methods, where voters express preferences for candidates.
+This method implements several consensus-based ranking methods, where voters
+express preferences for candidates.
 The input framework considers:
 \itemize{
-\item \strong{Voters}: A list where each element represents the preferences (subsets of candidates) of a single voter.
-\item \strong{Candidates}: A vector of all possible candidates. This vector is shuffled before processing to enforce random tie-breaking across methods.
-\item \strong{Weights}: A numeric vector specifying the \emph{influence} of each voter. Equal weights indicate all voters contribute equally; different weights can reflect varying voter importance.
+\item \strong{Voters}: A list where each element represents the preferences (subsets
+of candidates) of a single voter.
+\item \strong{Candidates}: A vector of all possible candidates. This vector is shuffled
+before processing to enforce random tie-breaking across methods.
+\item \strong{Weights}: A numeric vector specifying the \emph{influence} of each voter.
+Equal weights indicate all voters contribute equally; different weights can
+reflect varying voter importance.
 }
 
-The following methods are supported for ranking candidates:
+The following methods are supported:
 \itemize{
-\item \code{"av"}: \strong{Approval Voting (AV)} ranks candidates based on the number of voters approving them.
-\item \code{"sav"}: \strong{Satisfaction Approval Voting (SAV)} ranks candidates by normalizing approval scores based on the size of each voter's approval set.
-Voters who approve more candidates contribute a lesser score to the individual approved candidates.
-\item \code{"seq_pav"}: \strong{Sequential Proportional Approval Voting (PAV)} builds a committee by iteratively maximizing a proportionality-based satisfaction score.
-The \strong{PAV score} is a metric that calculates the weighted sum of harmonic numbers corresponding to the number of elected candidates supported by each voter, reflecting the overall satisfaction of voters in a committee selection process.
-\item \code{"seq_phragmen"}: \strong{Sequential Phragmen's Rule} selects candidates to balance voter representation by distributing "loads" evenly.
-The rule iteratively selects the candidate that results in the smallest increase in voter load.
-This approach is suitable for scenarios where a balanced representation is desired, as it seeks to evenly distribute the "burden" of representation among all voters.
+\item \code{"av"}: \strong{Approval Voting (AV)} ranks candidates based on the number of
+voters approving them.
+\item \code{"sav"}: \strong{Satisfaction Approval Voting (SAV)} ranks candidates by
+normalizing approval scores based on the size of each voter's approval set.
+Voters who approve more candidates contribute a lesser score to the individual
+approved candidates.
+\item \code{"seq_pav"}: \strong{Sequential Proportional Approval Voting (PAV)} builds a
+committee by iteratively maximizing a proportionality-based satisfaction score.
+The \strong{PAV score} is a metric that calculates the weighted sum of harmonic
+numbers corresponding to the number of elected candidates supported by each
+voter, reflecting the overall satisfaction of voters in a committee selection
+process.
+\item \code{"seq_phragmen"}: \strong{Sequential Phragmen's Rule} selects candidates to
+balance voter representation by distributing \emph{loads} evenly.
+The rule iteratively selects the candidate that results in the smallest
+increase in voter load.
+This approach is suitable for scenarios where a balanced representation is
+desired, as it seeks to evenly distribute the "burden" of representation among
+all voters.
 }
 
 All methods have weighted versions which consider voter weights.
 
-To allow for method-agnostic comparisons of rankings, we calculate the \strong{borda scores} for each method as:
+To allow for method-agnostic comparisons of rankings, we calculate the
+\strong{borda scores} for each method as:
 \deqn{s_{borda} = (p - i) / (p - 1)}
-where \eqn{p} is the total number of candidates, and \eqn{i} is the candidate's rank.
+where \eqn{p} is the total number of candidates, and \eqn{i} is the
+candidate's rank.
 }
 \examples{
 # 5 candidates
@@ -122,9 +154,14 @@ rank_candidates(voters, candidates, method = "seq_phragmen", borda_score = FALSE
 
 }
 \references{
-Lackner M, Skowron P (2023). \emph{Multi-Winner Voting with Approval Preferences}. Springer Nature, 121 p. \doi{10.1007/978-3-031-09016-5}.
+Lackner M, Skowron P (2023). \emph{Multi-Winner Voting with Approval Preferences}.
+Springer Nature, 121 p. \doi{10.1007/978-3-031-09016-5}.
 
-Zobolas J, George A, Lopez A, Fischer S, Becker M, Aittokallio T (2026). "Prognostic biomarker discovery in pancreatic cancer through hybrid ensemble feature selection and multi-omics data." \emph{BioData Mining}. \doi{10.1186/s13040-026-00546-0}.
+Zobolas J, George A, Lopez A, Fischer S, Becker M, Aittokallio T (2026).
+"Prognostic biomarker discovery in pancreatic cancer through hybrid ensemble
+feature selection and multi-omics data." \emph{BioData Mining}. \doi{10.1186/s13040-026-00546-0}.
 
-Meinshausen N, Buhlmann P (2010). "Stability Selection." \emph{Journal of the Royal Statistical Society Series B: Statistical Methodology}, 72(4), 417-473. \doi{10.1111/J.1467-9868.2010.00740.X}.
+Meinshausen N, Buhlmann P (2010). "Stability Selection." \emph{Journal of the Royal
+Statistical Society Series B: Statistical Methodology}, 72(4), 417-473.
+\doi{10.1111/J.1467-9868.2010.00740.X}.
 }

@@ -32,7 +32,7 @@
 #' voter, reflecting the overall satisfaction of voters in a committee selection
 #' process.
 #' - `"seq_phragmen"`: **Sequential Phragmen's Rule** selects candidates to
-#' balance voter representation by distributing "loads" evenly.
+#' balance voter representation by distributing *loads* evenly.
 #' The rule iteratively selects the candidate that results in the smallest
 #' increase in voter load.
 #' This approach is suitable for scenarios where a balanced representation is
@@ -162,7 +162,7 @@ rank_candidates = function(
     # Assign equal weights to all voters
     weights = rep(1, length(voters))
   } else {
-    # check: one weight >= 0 per voter
+    # check: one non-negative weight per voter
     weights = assert_numeric(weights, len = length(voters), lower = 0, any.missing = FALSE)
   }
 
