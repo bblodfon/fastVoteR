@@ -2,6 +2,7 @@
 
 * Remove `data.table` dependency
 * Refine `rank_candidates()` documentation
+* Add `check` argument in `rank_candidates()`
 
 # fastVoteR 0.0.2
 

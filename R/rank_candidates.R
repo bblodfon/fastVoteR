@@ -78,6 +78,11 @@
 #'  Shuffling ensures random tie-breaking across methods and prevents
 #'  deterministic biases when candidates with equal scores are encountered.
 #'  Default is `TRUE`.
+#' @param check (`logical(1)`) \cr
+#'  Whether to run additional voter-integrity checks. When `TRUE`, each voter
+#'  must approve at least one candidate, no voter may approve the same candidate
+#'  more than once, and all approved candidates must be present in `candidates`.
+#'  Default is `FALSE` for speed when inputs are already known to be valid.
 #'
 #' @return A `data.frame` with columns:
 #' - `"candidate"`: Candidate names.
@@ -145,7 +150,8 @@ rank_candidates = function(
     committee_size = NULL,
     method = "av",
     borda_score = TRUE,
-    shuffle_candidates = TRUE)
+    shuffle_candidates = TRUE,
+    check = FALSE)
   {
   # input checks
   assert_choice(method, choices = c("av", "sav", "seq_pav", "seq_phragmen"))
@@ -154,17 +160,21 @@ rank_candidates = function(
   assert_int(committee_size, lower = 1, null.ok = TRUE)
   assert_flag(borda_score)
   assert_flag(shuffle_candidates)
+  assert_flag(check)
 
-  # check that all voted candidates are in the candidates list
-  assert_subset(unique(unlist(voters)), choices = candidates)
+  if (check) {
+    check_voters(voters, candidates)
+  }
 
-  if (is.null(weights)) {
+   if (is.null(weights)) {
     # Assign equal weights to all voters
     weights = rep(1, length(voters))
   } else {
     # check: one non-negative weight per voter
     weights = assert_numeric(weights, len = length(voters), lower = 0, any.missing = FALSE)
-  }
+    # check: at least one positive weight!
+    assert_true(sum(weights) > 0)
+   }
 
   # Shuffle candidates for consistent tie-breaking
   if (shuffle_candidates) {
@@ -183,4 +193,26 @@ rank_candidates = function(
   }
 
   res
+}
+
+#' @noRd
+#' @keywords internal
+check_voters = function(voters, candidates) {
+  voter_lengths = lengths(voters)
+
+  if (any(voter_lengths == 0L)) {
+    stop("all voters must approve at least one candidate", call. = FALSE)
+  }
+
+  if (any(vapply(voters, anyDuplicated, integer(1)) > 0L)) {
+    stop("voters must not contain duplicated candidates", call. = FALSE)
+  }
+
+  voted_candidates = unlist(voters, use.names = FALSE)
+  candidate_matches = match(voted_candidates, candidates, nomatch = NA_integer_)
+  if (anyNA(candidate_matches)) {
+    stop("all voted candidates must be present in candidates", call. = FALSE)
+  }
+
+  invisible(TRUE)
 }
