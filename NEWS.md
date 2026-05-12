@@ -1,3 +1,8 @@
+# fastVoteR 0.0.3
+
+* Remove `data.table` dependency
+* Refine `rank_candidates()` documentation
+
 # fastVoteR 0.0.2
 
 * Add contributing guidelines
