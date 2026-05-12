@@ -90,11 +90,7 @@ add_borda_score = function(df, n) {
   assert_number(n, null.ok = FALSE, lower = 1)
 
   n_rows = nrow(df)
-  if (n_rows == 1) {
-    df$borda_score = 1
-  } else {
-    df$borda_score = (n - seq_len(n_rows)) / (n - 1)
-  }
+  df$borda_score = if (n_rows == 1) 1 else (n - seq_len(n_rows)) / (n - 1)
 
   df
 }
