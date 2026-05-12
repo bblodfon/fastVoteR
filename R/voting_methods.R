@@ -14,24 +14,31 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
     res_sel = data.frame(
       candidate = candidates_selected,
       score = approval_counts,
-      norm_score = approval_counts / length(voters)
+      norm_score = approval_counts / length(voters),
+      stringsAsFactors = FALSE
     )
 
     # candidates not selected at all get a score of 0
     res_not_sel = if (length(candidates_not_selected) == 0) {
-      data.frame(candidate = character(0), score = numeric(0), norm_score = numeric(0))
+      data.frame(
+        candidate = character(0),
+        score = numeric(0),
+        norm_score = numeric(0),
+        stringsAsFactors = FALSE
+      )
     } else {
       data.frame(
         candidate = candidates_not_selected,
         score = 0,
-        norm_score = 0
+        norm_score = 0,
+        stringsAsFactors = FALSE
       )
     }
 
     res = rbind(res_sel, res_not_sel)
   } else {
     # returns AV scores so needs ordering
-    res = data.frame(av_rcpp(voters, candidates, weights))
+    res = data.frame(av_rcpp(voters, candidates, weights), stringsAsFactors = FALSE)
     res = res[order(res$score, decreasing = TRUE), ]
     rownames(res) = NULL
   }
@@ -47,7 +54,7 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
 #' @keywords internal
 sav = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   # returns SAV scores so needs ordering
-  res = data.frame(sav_rcpp(voters, candidates, weights))
+  res = data.frame(sav_rcpp(voters, candidates, weights), stringsAsFactors = FALSE)
   res = res[order(res$score, decreasing = TRUE), ]
   rownames(res) = NULL
 
@@ -64,7 +71,8 @@ seq_pav = function(voters, candidates, weights, committee_size = NULL, borda_sco
   if (is.null(committee_size)) committee_size = length(candidates)
 
   # returns ranked candidates from best to worst (up to committee_size)
-  res = data.frame(seq_pav_rcpp(voters, candidates, weights, committee_size))
+  res = data.frame(seq_pav_rcpp(voters, candidates, weights, committee_size),
+                   stringsAsFactors = FALSE)
 
   # add borda scores
   if (borda_score) add_borda_score(res, n = length(candidates)) else res
