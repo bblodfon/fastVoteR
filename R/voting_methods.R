@@ -11,29 +11,30 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
     candidates_not_selected = setdiff(candidates, candidates_selected)
     approval_counts = as.vector(count_tbl)
 
-    res_sel = data.table(
+    res_sel = data.frame(
       candidate = candidates_selected,
       score = approval_counts,
       norm_score = approval_counts / length(voters)
     )
 
     # candidates not selected at all get a score of 0
-    res_not_sel = data.table(
+    res_not_sel = data.frame(
       candidate = candidates_not_selected,
       score = 0,
       norm_score = 0
     )
 
-    res = rbindlist(list(res_sel, res_not_sel))
+    res = rbind(res_sel, res_not_sel)
   } else {
     # returns AV scores so needs ordering
-    res = as.data.table(av_rcpp(voters, candidates, weights))
-    setorderv(res, cols = "score", order = -1)
+    res = data.frame(av_rcpp(voters, candidates, weights))
+    res[order(res$score, decreasing = TRUE), ]
+    rownames(res) = NULL
   }
 
   # filter: top N rows
   if (!is.null(committee_size)) {
-    res = res[1:committee_size]
+    res = res[1:committee_size, ]
   }
 
   if (borda_score) {
@@ -47,12 +48,13 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
 #' @keywords internal
 sav = function(voters, candidates, weights, committee_size = NULL, borda_score = TRUE) {
   # returns SAV scores so needs ordering
-  res = as.data.table(sav_rcpp(voters, candidates, weights))
-  setorderv(res, cols = "score", order = -1)
+  res = data.frame(sav_rcpp(voters, candidates, weights))
+  res = res[order(res$score, decreasing = TRUE), ]
+  rownames(res) = NULL
 
   # filter: top N rows
   if (!is.null(committee_size)) {
-    res = res[1:committee_size]
+    res = res[1:committee_size, ]
   }
 
   if (borda_score) {
@@ -70,7 +72,7 @@ seq_pav = function(voters, candidates, weights, committee_size = NULL, borda_sco
   }
 
   # returns ranked candidates from best to worst (up to committee_size)
-  res = as.data.table(seq_pav_rcpp(voters, candidates, weights, committee_size))
+  res = data.frame(seq_pav_rcpp(voters, candidates, weights, committee_size))
 
   if (borda_score) {
     add_borda_score(res, n = length(candidates))
@@ -87,7 +89,7 @@ seq_phragmen = function(voters, candidates, weights, committee_size = NULL, bord
   }
 
   # returns ranked candidates from best to worst (up to committee_size)
-  res = as.data.table(seq_phragmen_rcpp(voters, candidates, weights, committee_size))
+  res = data.frame(seq_phragmen_rcpp(voters, candidates, weights, committee_size))
 
   if (borda_score) {
     add_borda_score(res, n = length(candidates))
@@ -100,8 +102,15 @@ seq_phragmen = function(voters, candidates, weights, committee_size = NULL, bord
 #' `n` needs to be the total number of candidates (irrespective of committee size)
 #' @noRd
 #' @keywords internal
-add_borda_score = function(dt, n = NULL) {
-  if (is.null(n)) n = nrow(dt)
-  borda_score = NULL # silence data.table note: "no visible global binding"
-  dt[, borda_score := if (nrow(dt) == 1) 1 else (n - .I) / (n - 1)][]
+add_borda_score = function(df, n) {
+  assert_number(n, null.ok = FALSE, lower = 1)
+
+  n_rows = nrow(df)
+  if (n_rows == 1) {
+    df$borda_score = 1
+  } else {
+    df$borda_score = (n - seq_len(n_rows)) / (n - 1)
+  }
+
+  df
 }
