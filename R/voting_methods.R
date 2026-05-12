@@ -18,11 +18,15 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
     )
 
     # candidates not selected at all get a score of 0
-    res_not_sel = data.frame(
-      candidate = candidates_not_selected,
-      score = 0,
-      norm_score = 0
-    )
+    res_not_sel = if (length(candidates_not_selected) == 0) {
+      data.frame(candidate = character(0), score = numeric(0), norm_score = numeric(0))
+    } else {
+      data.frame(
+        candidate = candidates_not_selected,
+        score = 0,
+        norm_score = 0
+      )
+    }
 
     res = rbind(res_sel, res_not_sel)
   } else {
