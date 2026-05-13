@@ -7,82 +7,49 @@
 #' see Zobolas et al. (2026).
 #'
 #' @details
-#' This method implements several consensus-based ranking methods, where voters
-#' express preferences for candidates.
-#' The input framework considers:
-#' - **Voters**: A list where each element represents the preferences (subsets
-#' of candidates) of a single voter.
-#' - **Candidates**: A vector of all possible candidates. This vector is shuffled
-#' before processing to enforce random tie-breaking across methods.
-#' - **Weights**: A numeric vector specifying the *influence* of each voter.
-#' Equal weights indicate all voters contribute equally; different weights can
-#' reflect varying voter importance.
+#' We implement several consensus-based ranking methods, where voters express
+#' preferences for candidates.
+#' The framework has three components:
+#' - **Voters**: A list where each element is the set of approved candidates for
+#'   a single voter.
+#' - **Candidates**: A character vector of all possible candidates. This vector
+#'   can be shuffled to randomize tie-breaking across methods.
+#' - **Weights**: A numeric vector giving each voter’s influence. Equal weights
+#'   mean equal influence; differing weights reflect varying importance.
 #'
-#' The following methods are supported:
-#' - `"av"`: **Approval Voting (AV)** ranks candidates based on the number of
-#' voters approving them.
-#' - `"sav"`: **Satisfaction Approval Voting (SAV)** ranks candidates by
-#' normalizing approval scores based on the size of each voter's approval set.
-#' Voters who approve more candidates contribute a lesser score to the individual
-#' approved candidates.
-#' - `"seq_pav"`: **Sequential Proportional Approval Voting (PAV)** builds a
-#' committee by iteratively maximizing a proportionality-based satisfaction score.
-#' The **PAV score** is a metric that calculates the weighted sum of harmonic
-#' numbers corresponding to the number of elected candidates supported by each
-#' voter, reflecting the overall satisfaction of voters in a committee selection
-#' process.
-#' - `"seq_phragmen"`: **Sequential Phragmen's Rule** selects candidates to
-#' balance voter representation by distributing *loads* evenly.
-#' The rule iteratively selects the candidate that results in the smallest
-#' increase in voter load.
-#' This approach is suitable for scenarios where a balanced representation is
-#' desired, as it seeks to evenly distribute the "burden" of representation among
-#' all voters.
+#' This function is a thin wrapper that dispatches to method-specific implementations.
+#' Supported methods include:
 #'
-#' All methods have weighted versions which consider voter weights.
+#' 1. Approval Voting (`method = "av"`), calls [av()]
+#' 2. Satisfaction Approval Voting (`method = "sav"`), calls [sav()]
+#' 3. Sequential Proportional Approval Voting (`method = "seq_pav"`), calls [seq_pav()]
+#' 4. Sequential Phragmen’s Rule (`method = "seq_phragmen"`), calls [seq_phragmen()]
 #'
-#' To allow for method-agnostic comparisons of rankings, we calculate the
-#' **borda scores** for each method as:
-#' \deqn{s_{borda} = (p - i) / (p - 1)}
-#' where \eqn{p} is the total number of candidates, and \eqn{i} is the
-#' candidate's rank.
+#' All methods support voter weights.
 #'
-#' @param voters (`list()`) \cr
-#'  A list of subsets (`character` vectors), where each subset contains the
-#'  (assumed unique) candidates approved or selected by a voter.
-#' @param candidates (`character()`) \cr
-#'  A vector of all candidates to be ranked.
-#' @param weights (`numeric()|NULL`) \cr
-#'  A numeric vector of non-negative weights representing each voter's influence.
-#'  Larger weight, higher influence.
-#'  Must have the same length as `voters`.
-#'  If `NULL` (default), all voters are assigned equal weights of 1, representing
-#'  equal influence.
-#' @param committee_size (`integer(1)`)\cr
-#'  Number of top candidates to include in the ranking.
-#'  Default (`NULL`) includes all candidates.
-#'  For sequential methods such as `"seq_pav"` and `"seq_phragmen"`, this parameter
-#'  can speed up computation by limiting the selection process to only the top N
-#'  candidates, instead of generating a complete ranking.
-#'  In other methods (e.g., `"sav"` or `"av"`), this parameter simply filters
-#'  the final output to include only the top N candidates from the complete
-#'  ranking.
+#' For method-agnostic comparisons, we compute **borda scores**, which map each
+#' candidate’s rank to a normalized scale across methods that may otherwise
+#' return different score scales or only ordinal rankings.
+#'
+#' For sequential methods such as `"seq_pav"` and `"seq_phragmen"`, the
+#' `committee_size` parameter can speed up computation by selecting only the top
+#' \eqn{N} candidates instead of producing a full ranking. For non-sequential methods
+#' (e.g., `"sav"` or `"av"`), it simply truncates the final ranking to the top
+#' \eqn{N} candidates.
+#'
+#' @template param_voters
+#' @template param_candidates
+#' @template param_weights
+#' @template param_committee_size
+#' @template param_borda_score
+#' @template param_check
 #' @param method (`character(1)`) \cr
 #'  The ranking voting method to use. Must be one of: `"av"`, `"sav"`, `"seq_pav"`,
 #'  `"seq_phragmen"`. See Details.
-#' @param borda_score (`logical(1)`) \cr
-#'  Whether to calculate and include Borda scores in the output. See Details.
-#'  Default is `TRUE`.
 #' @param shuffle_candidates (`logical(1)`) \cr
-#'  Whether to shuffle the candidates randomly before computing the ranking.
-#'  Shuffling ensures random tie-breaking across methods and prevents
-#'  deterministic biases when candidates with equal scores are encountered.
-#'  Default is `TRUE`.
-#' @param check (`logical(1)`) \cr
-#'  Whether to run additional voter-integrity checks. When `TRUE`, each voter
-#'  must approve at least one candidate, no voter may approve the same candidate
-#'  more than once, and all approved candidates must be present in `candidates`.
-#'  Default is `FALSE` for speed when inputs are already known to be valid.
+#'  Whether to randomly shuffle candidates before ranking.
+#'  This provides random tie-breaking and avoids deterministic bias when scores
+#'  are equal. Default is `TRUE`.
 #'
 #' @return A `data.frame` with columns:
 #' - `"candidate"`: Candidate names.
@@ -100,7 +67,6 @@
 #' method returns only rankings.
 #'
 #' @references
-#'
 #' Lackner M, Skowron P (2023). *Multi-Winner Voting with Approval Preferences*.
 #' Springer Nature, 121 p. \doi{10.1007/978-3-031-09016-5}.
 #'
@@ -153,28 +119,8 @@ rank_candidates = function(
     shuffle_candidates = TRUE,
     check = FALSE)
   {
-  # input checks
   assert_choice(method, choices = c("av", "sav", "seq_pav", "seq_phragmen"))
-  assert_list(voters, min.len = 1, types = "character", null.ok = FALSE, any.missing = FALSE)
-  assert_character(candidates, min.len = 1, null.ok = FALSE, any.missing = FALSE)
-  assert_int(committee_size, lower = 1, null.ok = TRUE)
-  assert_flag(borda_score)
   assert_flag(shuffle_candidates)
-  assert_flag(check)
-
-  if (check) {
-    check_voters(voters, candidates)
-  }
-
-   if (is.null(weights)) {
-    # Assign equal weights to all voters
-    weights = rep(1, length(voters))
-  } else {
-    # check: one non-negative weight per voter
-    weights = assert_numeric(weights, len = length(voters), lower = 0, any.missing = FALSE)
-    # check: at least one positive weight!
-    assert_true(sum(weights) > 0)
-   }
 
   # Shuffle candidates for consistent tie-breaking
   if (shuffle_candidates) {
@@ -183,36 +129,14 @@ rank_candidates = function(
 
   # Call the appropriate ranking method
   if (method == "av") {
-    res = av(voters, candidates, weights, committee_size, borda_score)
+    res = av(voters, candidates, weights, committee_size, borda_score, check)
   } else if (method == "sav") {
-    res = sav(voters, candidates, weights, committee_size, borda_score)
+    res = sav(voters, candidates, weights, committee_size, borda_score, check)
   } else if (method == "seq_pav") {
-    res = seq_pav(voters, candidates, weights, committee_size, borda_score)
+    res = seq_pav(voters, candidates, weights, committee_size, borda_score, check)
   } else if (method == "seq_phragmen") {
-    res = seq_phragmen(voters, candidates, weights, committee_size, borda_score)
+    res = seq_phragmen(voters, candidates, weights, committee_size, borda_score, check)
   }
 
   res
-}
-
-#' @noRd
-#' @keywords internal
-check_voters = function(voters, candidates) {
-  voter_lengths = lengths(voters)
-
-  if (any(voter_lengths == 0L)) {
-    stop("all voters must approve at least one candidate", call. = FALSE)
-  }
-
-  if (any(vapply(voters, anyDuplicated, integer(1)) > 0L)) {
-    stop("voters must not contain duplicated candidates", call. = FALSE)
-  }
-
-  voted_candidates = unlist(voters, use.names = FALSE)
-  candidate_matches = match(voted_candidates, candidates, nomatch = NA_integer_)
-  if (anyNA(candidate_matches)) {
-    stop("all voted candidates must be present in `candidates`", call. = FALSE)
-  }
-
-  invisible(TRUE)
 }
