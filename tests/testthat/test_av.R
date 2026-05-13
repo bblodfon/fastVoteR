@@ -18,4 +18,9 @@ test_that("approval voting", {
   expect_equal(res2$candidate[5], "V5")
   expect_equal(res2$score, c(4, 2, 1, 1, 0)) # approval counts
   expect_equal(res2$norm_score, c(1, 0.5, 0.25, 0.25, 0))
+
+  # check edge case where all candidates were voted
+  res3 = av(vot2, cand2[1:4], we2)
+  expect_equal(res3$candidate[1:2], c("V3", "V1"))
+  expect_set_equal(res3$candidate[3:4], c("V2", "V4"))
 })
