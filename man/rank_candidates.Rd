@@ -11,7 +11,8 @@ rank_candidates(
   committee_size = NULL,
   method = "av",
   borda_score = TRUE,
-  shuffle_candidates = TRUE
+  shuffle_candidates = TRUE,
+  check = FALSE
 )
 }
 \arguments{
@@ -52,6 +53,12 @@ Whether to shuffle the candidates randomly before computing the ranking.
 Shuffling ensures random tie-breaking across methods and prevents
 deterministic biases when candidates with equal scores are encountered.
 Default is \code{TRUE}.}
+
+\item{check}{(\code{logical(1)}) \cr
+Whether to run additional voter-integrity checks. When \code{TRUE}, each voter
+must approve at least one candidate, no voter may approve the same candidate
+more than once, and all approved candidates must be present in \code{candidates}.
+Default is \code{FALSE} for speed when inputs are already known to be valid.}
 }
 \value{
 A \code{data.frame} with columns:
