@@ -29,7 +29,7 @@
 av = function(
   voters,
   candidates,
-  weights,
+  weights = NULL,
   committee_size = NULL,
   borda_score = TRUE,
   check = FALSE
@@ -122,7 +122,7 @@ av = function(
 sav = function(
   voters,
   candidates,
-  weights,
+  weights = NULL,
   committee_size = NULL,
   borda_score = TRUE,
   check = FALSE
@@ -180,7 +180,7 @@ sav = function(
 seq_pav = function(
   voters,
   candidates,
-  weights,
+  weights = NULL,
   committee_size = NULL,
   borda_score = TRUE,
   check = FALSE
@@ -235,7 +235,7 @@ seq_pav = function(
 seq_phragmen = function(
   voters,
   candidates,
-  weights,
+  weights = NULL,
   committee_size = NULL,
   borda_score = TRUE,
   check = FALSE
