@@ -1,8 +1,9 @@
 # fastVoteR 0.0.3
 
-* Remove `data.table` dependency
-* Refine `rank_candidates()` documentation
-* Add `check` argument in `rank_candidates()`
+* Remove the `data.table` dependency
+* Improve `rank_candidates()` documentation
+* Export internal R functions that wrap C++ code for easier reuse
+* Add an extra `check` argument to all voting functions and `rank_candidates()`
 
 # fastVoteR 0.0.2
 
