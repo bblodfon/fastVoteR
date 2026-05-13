@@ -44,7 +44,7 @@ av = function(voters, candidates, weights, committee_size = NULL, borda_score = 
   }
 
   # subset to top N rows if committee_size is specified
-  if (!is.null(committee_size)) res = head(res, committee_size)
+  if (!is.null(committee_size)) res = res[1:committee_size, ]
 
   # add borda scores
   if (borda_score) add_borda_score(res, n = length(candidates)) else res
@@ -59,7 +59,7 @@ sav = function(voters, candidates, weights, committee_size = NULL, borda_score =
   rownames(res) = NULL
 
   # subset to top N rows if committee_size is specified
-  if (!is.null(committee_size)) res = head(res, committee_size)
+  if (!is.null(committee_size)) res = res[1:committee_size, ]
 
   # add borda scores
   if (borda_score) add_borda_score(res, n = length(candidates)) else res

@@ -211,7 +211,7 @@ check_voters = function(voters, candidates) {
   voted_candidates = unlist(voters, use.names = FALSE)
   candidate_matches = match(voted_candidates, candidates, nomatch = NA_integer_)
   if (anyNA(candidate_matches)) {
-    stop("all voted candidates must be present in candidates", call. = FALSE)
+    stop("all voted candidates must be present in `candidates`", call. = FALSE)
   }
 
   invisible(TRUE)
