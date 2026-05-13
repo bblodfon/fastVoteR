@@ -20,3 +20,7 @@ reference:
   - title: Ranking Functions
     contents:
       - rank_candidates
+      - av
+      - sav
+      - seq_pav
+      - seq_phragmen
