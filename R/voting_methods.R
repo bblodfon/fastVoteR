@@ -299,8 +299,6 @@ check_voters = function(voters, candidates) {
   if (any(vapply(voters, anyDuplicated, integer(1)) > 0L)) {
     stop("voters must not contain duplicated candidates", call. = FALSE)
   }
-
-  invisible(TRUE)
 }
 
 #' @noRd
