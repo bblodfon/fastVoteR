@@ -4,6 +4,7 @@ test_that("sequential Phragmen's rule", {
   test_large_example(seq_phragmen, committee_size = 5)
   test_borda_score(seq_phragmen)
   test_equal_votes(seq_phragmen)
+  test_input_checks(seq_phragmen)
 
   # small data example
   res = seq_phragmen(vot2, cand2, w2) # different weights

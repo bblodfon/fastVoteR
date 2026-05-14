@@ -4,6 +4,7 @@ test_that("satisfaction approval voting", {
   test_large_example(sav)
   test_borda_score(sav)
   test_equal_votes(sav)
+  test_input_checks(sav)
 
   # small data example
   res = sav(vot2, cand2, w2) # different weights

@@ -290,14 +290,14 @@ check_voters = function(voters, candidates) {
     stop("all voters must approve at least one candidate", call. = FALSE)
   }
 
-  if (any(vapply(voters, anyDuplicated, integer(1)) > 0L)) {
-    stop("voters must not contain duplicated candidates", call. = FALSE)
-  }
-
-  voted_candidates = unlist(voters, use.names = FALSE)
+  voted_candidates = unique(unlist(voters, use.names = FALSE))
   candidate_matches = match(voted_candidates, candidates, nomatch = NA_integer_)
   if (anyNA(candidate_matches)) {
-    stop("all voted candidates must be present in `candidates`", call. = FALSE)
+    stop("all voted candidates must be present in the 'candidates' vector", call. = FALSE)
+  }
+
+  if (any(vapply(voters, anyDuplicated, integer(1)) > 0L)) {
+    stop("voters must not contain duplicated candidates", call. = FALSE)
   }
 
   invisible(TRUE)

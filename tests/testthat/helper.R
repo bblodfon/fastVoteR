@@ -124,3 +124,27 @@ test_equal_votes = function(method_fun) {
     expect_equal(res$score[4:5], c(0, 0))
   }
 }
+
+test_input_checks = function(method_fun) {
+  # default assertions
+  expect_error(method_fun(vot2, candidates = NULL)) # null candidates
+  expect_error(method_fun(voters = list(), cand2)) # empty voters
+  expect_error(method_fun(vot2, cand2, borda_score = "yes")) # invalid borda_score
+  expect_error(method_fun(vot2, cand2, check = "no")) # invalid check
+  expect_error(method_fun(vot2, cand2, committee_size = "3")) # invalid committee_size
+  expect_error(method_fun(vot2, cand2, weights = c(1,0,-1,3))) # invalid negative weight
+  expect_error(method_fun(vot2, cand2, weights = c(0,0,0,0))) # can't have all weights 0!
+
+  # extra checks
+  # all voters must approve at least one candidate
+  expect_error(method_fun(list(character(), c("V1")), c("V1", "V2"), check = TRUE),
+               "all voters must approve at least one candidate")
+  # V2 was voted, but is not in candidates
+  expect_error(method_fun(voters = list(c("V1", "V2")), candidates = c("V1", "V3"),
+    check = TRUE), "all voted candidates must be present in")
+  expect_error(method_fun(voters = list(c("V2"), c("V1", "V2", "V1")),
+    candidates = c("V1"), check = TRUE), "all voted candidates must be present in")
+  # V1 is duplicated
+  expect_error(method_fun(voters = list(c("V1", "V1"), c("V2")), candidates = c("V1", "V2"),
+    check = TRUE), "voters must not contain duplicated candidates")
+}

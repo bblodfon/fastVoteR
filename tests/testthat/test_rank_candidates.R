@@ -1,12 +1,9 @@
 # see `helper.R` for example inputs (`vot2`, `cand2`, `w2` )
 
 test_that("rank candidates", {
-  # input checks
-  expect_error(rank_candidates(voters = vot2, candidates = c("V1", "V3"), check = TRUE))
-  expect_error(rank_candidates(voters = vot2, candidates = NULL))
+  # invalid method
   expect_error(rank_candidates(voters = vot2, candidates = cand2, method = "XYZ"))
-  expect_error(rank_candidates(voters = list(), candidates = cand2))
-  expect_error(rank_candidates(voters = vot2, candidates = cand2, borda_score = "yes"))
+  # invalid shuffle_candidates
   expect_error(rank_candidates(voters = vot2, candidates = cand2, shuffle_candidates = NULL))
 
   # verify each method returns a data frame with expected dimensions (equal weights)
