@@ -7,7 +7,7 @@
 sav(
   voters,
   candidates,
-  weights,
+  weights = NULL,
   committee_size = NULL,
   borda_score = TRUE,
   check = FALSE
