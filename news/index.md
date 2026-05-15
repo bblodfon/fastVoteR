@@ -7,7 +7,7 @@
   [`rank_candidates()`](https://bblodfon.github.io/fastVoteR/reference/rank_candidates.md)
   documentation
 - Export internal R functions that wrap C++ code for easier reuse
-- Add extra `check` argument to all voting functions and
+- Add extra `check` parameter to all voting functions and
   [`rank_candidates()`](https://bblodfon.github.io/fastVoteR/reference/rank_candidates.md)
 
 ## fastVoteR 0.0.2

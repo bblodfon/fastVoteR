@@ -45,8 +45,8 @@ sav(
 - committee_size:
 
   (`integer(1)|NULL`)  
-  Number of top candidates to include in the ranking. Default (`NULL`)
-  includes all candidates.
+  Number of top-ranked candidates to return. Default (`NULL`) returns
+  all candidates.
 
 - borda_score:
 
