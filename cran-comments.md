@@ -1,3 +1,3 @@
-## fastVoteR 0.0.2
+## fastVoteR 0.0.3
 
-* maintainance updates
+* remove `data.table` dependency

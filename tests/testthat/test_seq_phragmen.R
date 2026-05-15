@@ -4,12 +4,13 @@ test_that("sequential Phragmen's rule", {
   test_large_example(seq_phragmen, committee_size = 5)
   test_borda_score(seq_phragmen)
   test_equal_votes(seq_phragmen)
+  test_input_checks(seq_phragmen)
 
   # small data example
   res = seq_phragmen(vot2, cand2, w2) # different weights
   expect_equal(res$candidate, c("V3", "V1", "V4", "V2", "V5"))
 
-  res2 = sav(vot2, cand2, we2) # equal weights
+  res2 = seq_phragmen(vot2, cand2, we2) # equal weights
   expect_equal(res2$candidate, c("V3", "V1", "V4", "V2", "V5"))
 
   # Example 2.9 from Lackner's "Multi-Winner Voting with Approval Preferences"

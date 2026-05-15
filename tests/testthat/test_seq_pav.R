@@ -4,6 +4,7 @@ test_that("sequential proportional approval voting", {
   test_large_example(seq_pav, committee_size = 5)
   test_borda_score(seq_pav)
   test_equal_votes(seq_pav)
+  test_input_checks(seq_pav)
 
   # small data example
   res = seq_pav(vot2, cand2, w2) # different weights

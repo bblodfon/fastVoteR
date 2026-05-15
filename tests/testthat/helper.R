@@ -37,7 +37,7 @@ test_large_example = function(method_fun, committee_size = NULL) {
   res = method_fun(vot, cand, w, committee_size)
   size = ifelse(is.null(committee_size), length(cand), committee_size)
 
-  expect_data_table(res, nrows = size, min.cols = 2, max.cols = 4)
+  expect_data_frame(res, nrows = size, min.cols = 2, max.cols = 4)
   expect_contains(colnames(res), c("candidate", "borda_score"))
 
   # committee candidates are included in the candidates
@@ -64,7 +64,7 @@ test_large_example = function(method_fun, committee_size = NULL) {
   # equal weights
   res_equal = method_fun(vot, cand, we, committee_size)
 
-  expect_data_table(res_equal, nrows = size, min.cols = 2, max.cols = 4)
+  expect_data_frame(res_equal, nrows = size, min.cols = 2, max.cols = 4)
   expect_contains(colnames(res_equal), c("candidate", "borda_score"))
 
   # committee candidates are included in the candidates
@@ -123,4 +123,29 @@ test_equal_votes = function(method_fun) {
     expect_true(all(res$score[1:3] > 0))
     expect_equal(res$score[4:5], c(0, 0))
   }
+}
+
+test_input_checks = function(method_fun) {
+  # default assertions
+  expect_error(method_fun(vot2, candidates = NULL)) # null candidates
+  expect_error(method_fun(voters = list(), cand2)) # empty voters
+  expect_error(method_fun(vot2, cand2, borda_score = "yes")) # invalid borda_score
+  expect_error(method_fun(vot2, cand2, check = "no")) # invalid check
+  expect_error(method_fun(vot2, cand2, committee_size = "3")) # invalid committee_size
+  expect_error(method_fun(vot2, cand2, weights = c(1,0,-1,3))) # invalid negative weight
+  expect_error(method_fun(vot2, cand2, weights = c(0,0,0,0))) # can't have all weights 0!
+  expect_error(method_fun(vot2, cand2, weights = c(0,1,0))) # length(weights) == length(voters)
+
+  # extra checks
+  # all voters must approve at least one candidate
+  expect_error(method_fun(list(character(), c("V1")), c("V1", "V2"), check = TRUE),
+               "all voters must approve at least one candidate")
+  # V2 was voted, but is not in candidates
+  expect_error(method_fun(voters = list(c("V1", "V2")), candidates = c("V1", "V3"),
+    check = TRUE), "all voted candidates must be present in")
+  expect_error(method_fun(voters = list(c("V2"), c("V1", "V2", "V1")),
+    candidates = c("V1"), check = TRUE), "all voted candidates must be present in")
+  # V1 is duplicated
+  expect_error(method_fun(voters = list(c("V1", "V1"), c("V2")), candidates = c("V1", "V2"),
+    check = TRUE), "voters must not contain duplicated candidates")
 }
