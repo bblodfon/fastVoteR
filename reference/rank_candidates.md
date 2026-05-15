@@ -15,7 +15,8 @@ rank_candidates(
   committee_size = NULL,
   method = "av",
   borda_score = TRUE,
-  shuffle_candidates = TRUE
+  shuffle_candidates = TRUE,
+  check = FALSE
 )
 ```
 
@@ -23,33 +24,28 @@ rank_candidates(
 
 - voters:
 
-  (`list`)  
-  A list of subsets, where each subset contains the candidates approved
-  or selected by a voter.
+  ([`list()`](https://rdrr.io/r/base/list.html))  
+  A list of subsets (`character` vectors), where each subset contains
+  the candidates approved or selected by a voter.
 
 - candidates:
 
-  (`character`)  
+  ([`character()`](https://rdrr.io/r/base/character.html))  
   A vector of all candidates to be ranked.
 
 - weights:
 
-  (`numeric`)  
-  A numeric vector of weights representing each voter's influence.
-  Larger weight, higher influence. Must have the same length as
-  `voters`. If `NULL` (default), all voters are assigned equal weights
-  of 1, representing equal influence.
+  (`numeric()|NULL`)  
+  A numeric vector of non-negative weights representing each voter's
+  influence. Larger weight, higher influence. Must have the same length
+  as `voters`. If `NULL` (default), all voters are assigned equal
+  weights of 1, representing equal influence.
 
 - committee_size:
 
-  (`integer(1)`)  
+  (`integer(1)|NULL`)  
   Number of top candidates to include in the ranking. Default (`NULL`)
-  includes all candidates. For sequential methods such as `"seq_pav"`
-  and `"seq_phragmen"`, this parameter can speed up computation by
-  limiting the selection process to only the top N candidates, instead
-  of generating a complete ranking. In other methods (e.g., `"sav"` or
-  `"av"`), this parameter simply filters the final output to include
-  only the top N candidates from the complete ranking.
+  includes all candidates.
 
 - method:
 
@@ -60,23 +56,30 @@ rank_candidates(
 - borda_score:
 
   (`logical(1)`)  
-  Whether to calculate and include Borda scores in the output. See
-  Details. Default is `TRUE`.
+  Whether to include a `borda_score` column in the output, which
+  provides a normalized score based on the candidate's rank. If `TRUE`
+  (default), the `borda_score` is calculated as \\(p - i) / (p - 1)\\,
+  where \\p\\ is the total number of candidates and \\i\\ is the
+  candidate's rank.
 
 - shuffle_candidates:
 
   (`logical(1)`)  
-  Whether to shuffle the candidates randomly before computing the
-  ranking. Shuffling ensures consistent random tie-breaking across
-  methods and prevents deterministic biases when candidates with equal
-  scores are encountered. Default is `TRUE`. Set to `FALSE` if
-  deterministic ordering of candidates is preferred.
+  Whether to randomly shuffle candidates before ranking. This provides
+  random tie-breaking and avoids deterministic bias when scores are
+  equal. Default is `TRUE`.
+
+- check:
+
+  (`logical(1)`)  
+  Whether to run additional voter-integrity checks. When `TRUE`, each
+  voter must approve at least one candidate, approvals must be unique
+  per voter, and all approved candidates must appear in `candidates`.
+  Use `FALSE` to skip these checks when inputs are known to be valid.
 
 ## Value
 
-A
-[data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html)
-with columns:
+A `data.frame` with columns:
 
 - `"candidate"`: Candidate names.
 
@@ -98,51 +101,46 @@ the method returns only rankings.
 
 ## Details
 
-This method implements several consensus-based ranking methods, where
-voters express preferences for candidates. The input framework
-considers:
+We implement several consensus-based ranking methods, where voters
+express preferences for candidates. The framework has three components:
 
-- **Voters**: A list where each element represents the preferences
-  (subsets of candidates) of a single voter.
+- **Voters**: A list where each element is the set of approved
+  candidates for a single voter.
 
-- **Candidates**: A vector of all possible candidates. This vector is
-  shuffled before processing to enforce random tie-breaking across
-  methods.
+- **Candidates**: A character vector of all possible candidates. This
+  vector can be shuffled to randomize tie-breaking across methods.
 
-- **Weights**: A numeric vector specifying the *influence* of each
-  voter. Equal weights indicate all voters contribute equally; different
-  weights can reflect varying voter importance.
+- **Weights**: A numeric vector giving each voter’s influence. Equal
+  weights mean equal influence; differing weights reflect varying
+  importance.
 
-The following methods are supported for ranking candidates:
+This function is a thin wrapper that dispatches to method-specific
+implementations. Supported methods include:
 
-- `"av"`: **Approval Voting (AV)** ranks candidates based on the number
-  of voters approving them.
+1.  Approval Voting (`method = "av"`), calls
+    [`av()`](https://bblodfon.github.io/fastVoteR/reference/av.md)
 
-- `"sav"`: **Satisfaction Approval Voting (SAV)** ranks candidates by
-  normalizing approval scores based on the size of each voter's approval
-  set. Voters who approve more candidates contribute a lesser score to
-  the individual approved candidates.
+2.  Satisfaction Approval Voting (`method = "sav"`), calls
+    [`sav()`](https://bblodfon.github.io/fastVoteR/reference/sav.md)
 
-- `"seq_pav"`: **Sequential Proportional Approval Voting (PAV)** builds
-  a committee by iteratively maximizing a proportionality-based
-  satisfaction score. The **PAV score** is a metric that calculates the
-  weighted sum of harmonic numbers corresponding to the number of
-  elected candidates supported by each voter, reflecting the overall
-  satisfaction of voters in a committee selection process.
+3.  Sequential Proportional Approval Voting (`method = "seq_pav"`),
+    calls
+    [`seq_pav()`](https://bblodfon.github.io/fastVoteR/reference/seq_pav.md)
 
-- `"seq_phragmen"`: **Sequential Phragmen's Rule** selects candidates to
-  balance voter representation by distributing "loads" evenly. The rule
-  iteratively selects the candidate that results in the smallest
-  increase in voter load. This approach is suitable for scenarios where
-  a balanced representation is desired, as it seeks to evenly distribute
-  the "burden" of representation among all voters.
+4.  Sequential Phragmen’s Rule (`method = "seq_phragmen"`), calls
+    [`seq_phragmen()`](https://bblodfon.github.io/fastVoteR/reference/seq_phragmen.md)
 
-All methods have weighted versions which consider voter weights.
+All methods support voter weights.
 
-To allow for method-agnostic comparisons of rankings, we calculate the
-**borda scores** for each method as: \$\$s\_{borda} = (p - i) / (p -
-1)\$\$ where \\p\\ is the total number of candidates, and \\i\\ is the
-candidate's rank.
+For method-agnostic comparisons, we compute **borda scores**, which map
+each candidate’s rank to a normalized scale across methods that may
+otherwise return different score scales or only ordinal rankings.
+
+For sequential methods such as `"seq_pav"` and `"seq_phragmen"`, the
+`committee_size` parameter can speed up computation by selecting only
+the top \\N\\ candidates instead of producing a full ranking. For
+non-sequential methods (e.g., `"sav"` or `"av"`), it simply truncates
+the final ranking to the top \\N\\ candidates.
 
 ## References
 
@@ -182,51 +180,46 @@ weights = c(1.1, 2.5, 0.8, 0.9)
 
 # Approval voting (all voters equal)
 rank_candidates(voters, candidates)
-#>    candidate score norm_score borda_score
-#>       <char> <num>      <num>       <num>
-#> 1:        V3     3       0.75        1.00
-#> 2:        V1     2       0.50        0.75
-#> 3:        V2     2       0.50        0.50
-#> 4:        V4     2       0.50        0.25
-#> 5:        V5     0       0.00        0.00
+#>   candidate score norm_score borda_score
+#> 1        V3     3       0.75        1.00
+#> 2        V1     2       0.50        0.75
+#> 3        V2     2       0.50        0.50
+#> 4        V4     2       0.50        0.25
+#> 5        V5     0       0.00        0.00
 
 # Approval voting (voters unequal)
 rank_candidates(voters, candidates, weights)
-#>    candidate score norm_score borda_score
-#>       <char> <num>      <num>       <num>
-#> 1:        V3   4.4  0.8301887        1.00
-#> 2:        V1   3.6  0.6792453        0.75
-#> 3:        V4   2.0  0.3773585        0.50
-#> 4:        V2   1.7  0.3207547        0.25
-#> 5:        V5   0.0  0.0000000        0.00
+#>   candidate score norm_score borda_score
+#> 1        V3   4.4  0.8301887        1.00
+#> 2        V1   3.6  0.6792453        0.75
+#> 3        V4   2.0  0.3773585        0.50
+#> 4        V2   1.7  0.3207547        0.25
+#> 5        V5   0.0  0.0000000        0.00
 
 # Satisfaction Approval voting (voters unequal, no borda score)
 rank_candidates(voters, candidates, weights, method = "sav", borda_score = FALSE)
-#>    candidate     score norm_score
-#>       <char>     <num>      <num>
-#> 1:        V3 2.0166667  0.8175676
-#> 2:        V1 1.6166667  0.6554054
-#> 3:        V2 0.8500000  0.3445946
-#> 4:        V4 0.8166667  0.3310811
-#> 5:        V5 0.0000000  0.0000000
+#>   candidate     score norm_score
+#> 1        V3 2.0166667  0.8175676
+#> 2        V1 1.6166667  0.6554054
+#> 3        V2 0.8500000  0.3445946
+#> 4        V4 0.8166667  0.3310811
+#> 5        V5 0.0000000  0.0000000
 
 # Sequential Proportional Approval voting (voters equal, no borda score)
 rank_candidates(voters, candidates, method = "seq_pav", borda_score = FALSE)
-#>    candidate
-#>       <char>
-#> 1:        V3
-#> 2:        V4
-#> 3:        V2
-#> 4:        V1
-#> 5:        V5
+#>   candidate
+#> 1        V3
+#> 2        V4
+#> 3        V2
+#> 4        V1
+#> 5        V5
 
 # Sequential Phragmen's Rule (voters equal)
 rank_candidates(voters, candidates, method = "seq_phragmen", borda_score = FALSE)
-#>    candidate
-#>       <char>
-#> 1:        V3
-#> 2:        V2
-#> 3:        V1
-#> 4:        V4
-#> 5:        V5
+#>   candidate
+#> 1        V3
+#> 2        V2
+#> 3        V1
+#> 4        V4
+#> 5        V5
 ```

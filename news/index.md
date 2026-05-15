@@ -1,6 +1,18 @@
 # Changelog
 
+## fastVoteR 0.0.3
+
+- Remove the `data.table` dependency
+- Improve
+  [`rank_candidates()`](https://bblodfon.github.io/fastVoteR/reference/rank_candidates.md)
+  documentation
+- Export internal R functions that wrap C++ code for easier reuse
+- Add extra `check` argument to all voting functions and
+  [`rank_candidates()`](https://bblodfon.github.io/fastVoteR/reference/rank_candidates.md)
+
 ## fastVoteR 0.0.2
+
+CRAN release: 2026-04-14
 
 - Add contributing guidelines
 - Change license to MIT

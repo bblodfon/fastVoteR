@@ -11,13 +11,13 @@
 ## Citation
 
 Zobolas J (2026). *fastVoteR: Efficient Voting Methods for Committee
-Selection*. R package version 0.0.2,
+Selection*. R package version 0.0.3,
 <https://bblodfon.github.io/fastVoteR/>.
 
     @Manual{,
       title = {fastVoteR: Efficient Voting Methods for Committee Selection},
       author = {John Zobolas},
       year = {2026},
-      note = {R package version 0.0.2},
+      note = {R package version 0.0.3},
       url = {https://bblodfon.github.io/fastVoteR/},
     }

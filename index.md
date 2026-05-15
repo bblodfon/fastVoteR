@@ -10,12 +10,14 @@ selection. Uses [Rcpp](https://cran.r-project.org/package=Rcpp).
 CRAN version:
 
 ``` r
+
 install.packages("fastVoteR")
 ```
 
 Development version from GitHub:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("bblodfon/fastVoteR")
 ```
@@ -23,6 +25,7 @@ pak::pak("bblodfon/fastVoteR")
 ## Example
 
 ``` r
+
 library(fastVoteR)
 
 # 5 candidates
