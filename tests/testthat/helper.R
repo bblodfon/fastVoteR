@@ -134,6 +134,7 @@ test_input_checks = function(method_fun) {
   expect_error(method_fun(vot2, cand2, committee_size = "3")) # invalid committee_size
   expect_error(method_fun(vot2, cand2, weights = c(1,0,-1,3))) # invalid negative weight
   expect_error(method_fun(vot2, cand2, weights = c(0,0,0,0))) # can't have all weights 0!
+  expect_error(method_fun(vot2, cand2, weights = c(0,1,0))) # length(weights) == length(voters)
 
   # extra checks
   # all voters must approve at least one candidate
