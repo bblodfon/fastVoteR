@@ -31,8 +31,8 @@ If \code{NULL} (default), all voters are assigned equal weights of 1, representi
 equal influence.}
 
 \item{committee_size}{(\code{integer(1)|NULL})\cr
-Number of top candidates to include in the ranking.
-Default (\code{NULL}) includes all candidates.}
+Number of top-ranked candidates to return.
+Default (\code{NULL}) returns all candidates.}
 
 \item{method}{(\code{character(1)}) \cr
 The ranking voting method to use. Must be one of: \code{"av"}, \code{"sav"}, \code{"seq_pav"},

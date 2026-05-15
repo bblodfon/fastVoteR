@@ -29,8 +29,8 @@ If \code{NULL} (default), all voters are assigned equal weights of 1, representi
 equal influence.}
 
 \item{committee_size}{(\code{integer(1)|NULL})\cr
-Number of top candidates to include in the ranking.
-Default (\code{NULL}) includes all candidates.}
+Number of top-ranked candidates to return.
+Default (\code{NULL}) returns all candidates.}
 
 \item{borda_score}{(\code{logical(1)}) \cr
 Whether to include a \code{borda_score} column in the output, which provides a
